@@ -1,15 +1,14 @@
-﻿CREATE TABLE [dbo].[enrollments] (
+﻿CREATE TABLE [dbo].[Enrollments] (
     [enrollment_id]   INT  NOT NULL,
     [student_id]      INT  NULL,
     [course_id]       INT  NULL,
-    [enrollment_date] DATE NULL,
-    [grade]           INT  NULL,
-    [completed]       BIT  NULL,
+    [enrollment_date] DATE DEFAULT (getdate()) NULL,
     PRIMARY KEY CLUSTERED ([enrollment_id] ASC),
-    CONSTRAINT [check_grade_value] CHECK ([grade]>=(0) AND [grade]<=(10)),
-    FOREIGN KEY ([course_id]) REFERENCES [dbo].[courses] ([Course_id]),
-    FOREIGN KEY ([student_id]) REFERENCES [dbo].[Student_info] ([student_id])
+    FOREIGN KEY ([course_id]) REFERENCES [dbo].[Courses] ([course_id]),
+    FOREIGN KEY ([student_id]) REFERENCES [dbo].[Students] ([student_id])
 );
+
+
 
 
 
