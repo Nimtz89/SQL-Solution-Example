@@ -12,3 +12,19 @@
 
 
 
+
+
+
+GO
+
+CREATE TRIGGER [dbo].[generate_enrollment_id]
+ON [dbo].[Enrollments]
+INSTEAD OF INSERT
+AS
+BEGIN
+    DECLARE @last_enrollment_id INT;
+    SELECT @last_enrollment_id = MAX(enrollment_id) FROM Enrollments;
+    INSERT INTO Enrollments(enrollment_id, student_id, course_id, enrollment_date)
+    SELECT COALESCE(@last_enrollment_id + 1, 1), student_id, course_id, GETDATE()
+    FROM inserted;
+END;
