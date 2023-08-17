@@ -13,3 +13,18 @@
     UNIQUE NONCLUSTERED ([email] ASC)
 );
 
+
+
+
+GO
+CREATE TRIGGER generate_student_id
+ON Students
+INSTEAD OF INSERT
+AS
+BEGIN
+    DECLARE @last_student_id INT;
+    SELECT @last_student_id = MAX(student_id) FROM Students;
+    INSERT INTO Students (student_id, first_name, last_name, date_of_birth, gender, email, phone_number, address, registration_date)
+    SELECT COALESCE(@last_student_id + 1, 1), first_name, last_name, date_of_birth, gender, email, phone_number, address, GETDATE()
+    FROM inserted;
+END;
